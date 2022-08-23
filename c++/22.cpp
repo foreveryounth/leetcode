@@ -2,6 +2,7 @@
 #include <string>
 using namespace std;
 
+class Solution2;
 class Solution
 {
 private:
@@ -35,11 +36,38 @@ public:
     }
 };
 
+class Solution2
+{
+public:
+    vector<string> generateParenthesis(int n)
+    {
+        if (n == 0)
+            return {""};
+        else if (n == 1)
+            return {"()"};
+
+        vector<vector<string>> dp(n + 1);
+        dp[0] = {""};
+        dp[1] = {"()"};
+        for (int i = 2; i <= n; i++)
+        {
+            for (int p = 0; p < i; p++)
+            {
+                int q = i - 1 - p;
+                for (string str1 : dp[p])
+                    for (string str2 : dp[q])
+                        dp[i].push_back(string("(" + str1 + ")" + str2));
+            }
+        }
+        return dp[n];
+    }
+};
+
 int main()
 {
-    int n = 2;
+    int n = 3;
     vector<string> vec = {"1", "12"};
-    Solution s = Solution();
+    Solution2 s = Solution2();
     vector<string> res = s.generateParenthesis(n);
     return 0;
 }
